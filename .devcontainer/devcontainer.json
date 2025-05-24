@@ -1,0 +1,29 @@
+{
+	"name": "Java",
+	"dockerFile": "Dockerfile",
+  "workspaceFolder": "/workspaces/jostrel",
+
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "none",
+			"installMaven": "true",
+			"installGradle": "false"
+		}
+	},
+
+	"customizations": {
+    "vscode": {
+      "extensions": [
+	      "redhat.java",
+	      "vscjava.vscode-maven",
+	      "vscjava.vscode-java-test",
+	      "vscjava.vscode-java-debug",
+ 	      "vscjava.vscode-java-dependency",
+	      "esbenp.prettier-vscode",
+ 	      "redhat.vscode-yaml",
+			  "pivotal.vscode-spring-boot",
+				"dotjoshjohnson.xml"
+      ]
+    }
+  }
+}

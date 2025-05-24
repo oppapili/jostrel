@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Debug JostrelApplication",
+      "request": "launch",
+      "mainClass": "io.github.oppapili.jostrel.JostrelApplication",
+      "projectName": "jostrel",
+      "args": "",
+      "vmArgs": "",
+      "console": "integratedTerminal"
+    }
+  ]
+}
