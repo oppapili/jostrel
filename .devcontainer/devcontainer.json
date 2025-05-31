@@ -22,7 +22,8 @@
 	      "esbenp.prettier-vscode",
  	      "redhat.vscode-yaml",
 			  "pivotal.vscode-spring-boot",
-				"dotjoshjohnson.xml"
+				"dotjoshjohnson.xml",
+				"gabrielbb.vscode-lombok"
       ]
     }
   }

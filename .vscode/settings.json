@@ -1,9 +1,23 @@
 {
-  "java.compile.nullAnalysis.mode": "automatic",
+  "editor.formatOnSave": true,
   "[java]": {
+    "editor.formatOnSave": true
+  },
+  "[xml]": {
     "editor.formatOnSave": true
   },
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
-  }
+  },
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-21",
+      "path": "/usr/lib/jvm/msopenjdk-current",
+      "default": true
+    }
+  ],
+  "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+  "java.format.settings.profile": "GoogleStyle",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
