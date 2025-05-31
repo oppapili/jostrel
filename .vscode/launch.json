@@ -7,7 +7,7 @@
       "request": "launch",
       "mainClass": "io.github.oppapili.jostrel.JostrelApplication",
       "projectName": "jostrel",
-      "args": "",
+      "args": "--logging.level.root=WARN --logging.level.io.github.oppapili.jostrel=TRACE",
       "vmArgs": "",
       "console": "integratedTerminal"
     }
