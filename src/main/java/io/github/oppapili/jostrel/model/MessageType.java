@@ -5,7 +5,9 @@ package io.github.oppapili.jostrel.model;
  * 
  * <p>
  * Each message type corresponds to the first element of a message array defined in the NIP-01
- * specification:
+ * 
+ * <p>
+ * Specification:
  * https://github.com/nostr-protocol/nips/blob/master/01.md#communication-between-clients-and-relays
  */
 public enum MessageType {
