@@ -34,6 +34,16 @@ public class SubscriptionManager {
   }
 
   /**
+   * Retrieves all subscriptions associated with a specific session ID.
+   *
+   * @param sessionId the ID of the session
+   * @return a map of subscription IDs to Subscription objects for the specified session
+   */
+  public Map<String, Subscription> getSubscriptionsOfSession(String sessionId) {
+    return subscriptions.getOrDefault(sessionId, Map.of());
+  }
+
+  /**
    * Removes a subscription from a session by its subscription ID.
    * 
    * @param sessionId the ID of the session
