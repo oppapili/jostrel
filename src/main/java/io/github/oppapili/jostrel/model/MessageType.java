@@ -24,6 +24,8 @@ public enum MessageType {
    * real-time.
    */
   EOSE,
+  /** CLOSED: Indicate that a subscription was ended on the server side */
+  CLOSED,
   /** NOTICE: Send human-readable error messages or other things to clients. */
   NOTICE;
 }

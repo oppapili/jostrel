@@ -1,6 +1,7 @@
 package io.github.oppapili.jostrel.service;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
 import io.github.oppapili.jostrel.model.Subscription;
@@ -48,18 +49,25 @@ public class SubscriptionManager {
    * 
    * @param sessionId the ID of the session
    * @param subscriptionId the ID of the subscription to remove
+   * @return an Optional containing the removed Subscription if it exists, or an empty Optional if
+   *         not found
    */
-  public void removeSubscriptionFromSession(String sessionId, String subscriptionId) {
+  public Optional<Subscription> removeSubscriptionFromSession(String sessionId,
+      String subscriptionId) {
     var subscriptionsOfSession = subscriptions.get(sessionId);
 
     if (subscriptionsOfSession != null) {
-      subscriptionsOfSession.remove(subscriptionId);
+      var removedSubscription = subscriptionsOfSession.remove(subscriptionId);
 
       // If there are no subscriptions left for this session, remove the session entry
       if (subscriptionsOfSession.isEmpty()) {
         subscriptions.remove(sessionId);
       }
+
+      return Optional.ofNullable(removedSubscription);
     }
+
+    return Optional.empty();
   }
 
   /**

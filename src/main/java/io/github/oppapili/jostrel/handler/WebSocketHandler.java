@@ -11,6 +11,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import io.github.oppapili.jostrel.model.ClosedMessage;
 import io.github.oppapili.jostrel.model.Filter;
 import io.github.oppapili.jostrel.model.Message;
 import io.github.oppapili.jostrel.model.MessageDeserializer;
@@ -64,8 +65,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 case CLOSE:
                     // Handle unsubscribe request
                     // payload: [<subscription_id>]
-                    subscriptionManager.removeSubscriptionFromSession(session.getId(),
-                            payload.get(0).asText());
+                    var removedSubscription = subscriptionManager.removeSubscriptionFromSession(
+                            session.getId(), payload.get(0).asText());
+                    if (removedSubscription.isPresent()) {
+                        var closedMsg = new ClosedMessage(removedSubscription.get().getId());
+                        session.sendMessage(
+                                new TextMessage(objectMapper.writeValueAsString(closedMsg)));
+                    }
                     break;
 
                 default:
