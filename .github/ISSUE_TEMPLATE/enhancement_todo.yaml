@@ -1,0 +1,45 @@
+name: Enhancement TODO
+description: Track a planned feature as a personal task
+title: "[Enhancement]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### This is a personal TODO for tracking a feature I plan to implement.
+        Write down the details while they are still fresh.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What feature or improvement do you want to add?
+      placeholder: Short description of the feature idea.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why is this feature needed?
+      description: Why do you think this feature should be added? What problem does it solve?
+      placeholder: Brief rationale or background.
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / Implementation Ideas
+      description: Any technical notes, rough plans, or considerations for implementation.
+      placeholder: e.g. which modules to touch, edge cases to think about
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Status
+      options:
+        - label: I have reviewed existing issues and this is not a duplicate.
+        - label: I plan to implement this myself.
