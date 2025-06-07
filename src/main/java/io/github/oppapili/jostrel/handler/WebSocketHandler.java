@@ -10,12 +10,10 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.github.oppapili.jostrel.model.ClosedMessage;
 import io.github.oppapili.jostrel.model.Event;
 import io.github.oppapili.jostrel.model.Filter;
 import io.github.oppapili.jostrel.model.Message;
-import io.github.oppapili.jostrel.model.MessageDeserializer;
 import io.github.oppapili.jostrel.model.Subscription;
 import io.github.oppapili.jostrel.service.EventService;
 import io.github.oppapili.jostrel.service.SubscriptionManager;
@@ -24,19 +22,18 @@ import io.github.oppapili.jostrel.service.SubscriptionManager;
 public class WebSocketHandler extends TextWebSocketHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
-    private final ObjectMapper objectMapper;
 
+    @Autowired
+    private ObjectMapper objectMapper;
     @Autowired
     private SubscriptionManager subscriptionManager;
     @Autowired
     private EventService eventService;
 
-    public WebSocketHandler(SubscriptionManager subscriptionManager, EventService eventService) {
-        this.objectMapper = new ObjectMapper();
-        SimpleModule module = new SimpleModule();
-        module.addDeserializer(Message.class, new MessageDeserializer());
-        objectMapper.registerModule(module);
-
+    public WebSocketHandler(ObjectMapper objectMapper, SubscriptionManager subscriptionManager,
+            EventService eventService) {
+        this.objectMapper = objectMapper;
+        this.subscriptionManager = subscriptionManager;
         this.eventService = eventService;
     }
 
