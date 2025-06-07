@@ -12,10 +12,12 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.github.oppapili.jostrel.model.ClosedMessage;
+import io.github.oppapili.jostrel.model.Event;
 import io.github.oppapili.jostrel.model.Filter;
 import io.github.oppapili.jostrel.model.Message;
 import io.github.oppapili.jostrel.model.MessageDeserializer;
 import io.github.oppapili.jostrel.model.Subscription;
+import io.github.oppapili.jostrel.service.EventStore;
 import io.github.oppapili.jostrel.service.SubscriptionManager;
 
 @Component
@@ -26,6 +28,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Autowired
     private SubscriptionManager subscriptionManager;
+    @Autowired
+    private EventStore eventStore;
 
     public WebSocketHandler(SubscriptionManager subscriptionManager) {
         this.objectMapper = new ObjectMapper();
@@ -49,7 +53,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
             switch (nostrMsg.getType()) {
                 case EVENT:
                     // Handle event message
-                    logger.debug("Received event: " + nostrMsg.getPayload());
+                    var event = objectMapper.convertValue(payload, Event.class);
+                    eventStore.save(event);
                     break;
 
                 case REQ:
