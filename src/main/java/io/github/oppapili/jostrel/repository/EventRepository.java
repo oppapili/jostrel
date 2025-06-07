@@ -1,12 +1,12 @@
-package io.github.oppapili.jostrel.service;
+package io.github.oppapili.jostrel.repository;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import io.github.oppapili.jostrel.model.Event;
 
-@Component
-public class EventStore {
+@Repository
+public class EventRepository {
     private final List<Event> events = new CopyOnWriteArrayList<>();
 
     public void save(Event event) {

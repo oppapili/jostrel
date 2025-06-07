@@ -17,7 +17,7 @@ import io.github.oppapili.jostrel.model.Filter;
 import io.github.oppapili.jostrel.model.Message;
 import io.github.oppapili.jostrel.model.MessageDeserializer;
 import io.github.oppapili.jostrel.model.Subscription;
-import io.github.oppapili.jostrel.service.EventStore;
+import io.github.oppapili.jostrel.service.EventService;
 import io.github.oppapili.jostrel.service.SubscriptionManager;
 
 @Component
@@ -29,13 +29,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Autowired
     private SubscriptionManager subscriptionManager;
     @Autowired
-    private EventStore eventStore;
+    private EventService eventService;
 
-    public WebSocketHandler(SubscriptionManager subscriptionManager) {
+    public WebSocketHandler(SubscriptionManager subscriptionManager, EventService eventService) {
         this.objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
         module.addDeserializer(Message.class, new MessageDeserializer());
         objectMapper.registerModule(module);
+
+        this.eventService = eventService;
     }
 
     @Override
@@ -54,7 +56,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 case EVENT:
                     // Handle event message
                     var event = objectMapper.convertValue(payload, Event.class);
-                    eventStore.save(event);
+                    eventService.saveEvent(event);
                     break;
 
                 case REQ:
