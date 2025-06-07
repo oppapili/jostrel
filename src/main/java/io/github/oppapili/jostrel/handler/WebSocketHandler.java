@@ -55,19 +55,22 @@ public class WebSocketHandler extends TextWebSocketHandler {
             switch (nostrMsg.getType()) {
                 case EVENT:
                     // Handle event message
+                    // payload: [<event>]
                     var event = objectMapper.convertValue(payload, Event.class);
+
+                    // save the event to the database
                     eventService.saveEvent(event);
                     break;
 
                 case REQ:
                     // Handle subscription request
                     // payload: [<subscription_id>, <filters1>, <filters2>, ...]
-
-                    // Add subscription to the session
                     var filters = payload.subList(1, payload.size()).stream()
                             .map(node -> objectMapper.convertValue(node, Filter.class)).toList();
                     var subscription = Subscription.builder().id(payload.get(0).asText())
                             .filters(filters).build();
+
+                    // Add subscription to the session
                     subscriptionManager.addSubscriptionToSession(session.getId(), subscription);
 
                     // Send matching events for the subscription filters
@@ -91,8 +94,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 case CLOSE:
                     // Handle unsubscribe request
                     // payload: [<subscription_id>]
-                    var removedSubscription = subscriptionManager.removeSubscriptionFromSession(
-                            session.getId(), payload.get(0).asText());
+                    var subscriptionId = payload.get(0).asText();
+
+                    // Remove subscription from the session
+                    var removedSubscription = subscriptionManager
+                            .removeSubscriptionFromSession(session.getId(), subscriptionId);
+
+                    // If the subscription was removed, send a CLOSED message
                     if (removedSubscription.isPresent()) {
                         var closedMsg = new ClosedMessage(removedSubscription.get().getId());
                         session.sendMessage(
