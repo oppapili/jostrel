@@ -1,5 +1,6 @@
 package io.github.oppapili.jostrel.handler;
 
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.oppapili.jostrel.model.ClosedMessage;
+import io.github.oppapili.jostrel.model.EoseMessage;
 import io.github.oppapili.jostrel.model.Event;
+import io.github.oppapili.jostrel.model.EventMessage;
 import io.github.oppapili.jostrel.model.Filter;
 import io.github.oppapili.jostrel.model.Message;
 import io.github.oppapili.jostrel.model.Subscription;
@@ -59,11 +62,30 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 case REQ:
                     // Handle subscription request
                     // payload: [<subscription_id>, <filters1>, <filters2>, ...]
+
+                    // Add subscription to the session
                     var filters = payload.subList(1, payload.size()).stream()
                             .map(node -> objectMapper.convertValue(node, Filter.class)).toList();
                     var subscription = Subscription.builder().id(payload.get(0).asText())
                             .filters(filters).build();
                     subscriptionManager.addSubscriptionToSession(session.getId(), subscription);
+
+                    // Send matching events for the subscription filters
+                    var matchedEvents = eventService.findEventsByFilters(filters);
+                    matchedEvents.stream()
+                            .map(e -> new EventMessage(subscription.getId(), e, objectMapper))
+                            .forEach(eventMsg -> {
+                                try {
+                                    session.sendMessage(new TextMessage(eventMsg.toString()));
+                                } catch (IOException e) {
+                                    logger.error("❌ Error sending event message: " + e.getMessage(),
+                                            e);
+                                }
+                            });
+
+                    // Send EOSE (End of Stream Event) message
+                    var eoseMsg = new EoseMessage(subscription.getId());
+                    session.sendMessage(new TextMessage(eoseMsg.toString()));
                     break;
 
                 case CLOSE:
