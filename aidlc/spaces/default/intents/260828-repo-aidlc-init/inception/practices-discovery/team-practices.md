@@ -1,9 +1,4 @@
-# Team-Level Rules
-
-> This team's affirmed practices and corrections. Loaded after `org.md` as
-> strict-additive guidance; contradictions with broader policy are rejected.
-> Populated by the practices-discovery affirmation gate. Edit at the gate,
-> not directly.
+# Team Practices — Jostrel
 
 ## Way of Working
 
@@ -33,14 +28,3 @@ trunk-based development。単一 `main` ブランチへ短命のフィーチャ�
 - 命名は Java 言語慣習に準拠: クラスは PascalCase、メソッド/変数は camelCase、定数は SCREAMING_SNAKE_CASE。
 - すべての公開クラス/メソッドに JavaDoc を付与する（既存コードで実践済み）。
 - 秘密情報はコミットせず環境変数で管理。クエリはパラメータ化。
-## Forbidden
-
-<!-- Team-specific forbidden patterns -->
-
-## Mandated
-
-<!-- Team-specific mandates -->
-
-## Corrections
-
-<!-- Self-learning loop appends here. -->

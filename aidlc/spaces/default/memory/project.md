@@ -52,12 +52,18 @@
 <!-- Format: NEVER [behavior] (affirmed [date]) -->
 <!-- Example: NEVER throw exceptions across service layer boundaries (affirmed 2026-05-17) -->
 
+- NEVER 秘密情報をコミットする。 (affirmed 2026-08-28)
+- NEVER SQL クエリを文字列連結で組み立てる（パラメータ化する）。 (affirmed 2026-08-28)
 ## Mandated
 
 <!-- Populated by practices-discovery affirmation gate. -->
 <!-- Format: ALWAYS [behavior] (affirmed [date]) -->
 <!-- Example: ALWAYS use Result<T,E> for fallible operations in service layer (affirmed 2026-05-17) -->
 
+- ALWAYS commit と push はユーザーの確認を得てから実行する。 (affirmed 2026-08-28)
+- ALWAYS コミットメッセージは Conventional Commits（`type(scope): description`）に従う。 (affirmed 2026-08-28)
+- ALWAYS 公開関数にドキュメンテーション（JavaDoc）を付与する。 (affirmed 2026-08-28)
+- ALWAYS 秘密情報は環境変数で管理する。 (affirmed 2026-08-28)
 ## Corrections
 
 <!-- Project-specific corrections from human feedback. -->
